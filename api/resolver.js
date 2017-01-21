@@ -7,6 +7,7 @@ module.exports = function(req, res) {
   }
 
   var width = data.width > 600 ? 600 : data.width;
+  // var head_html = '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">';
   var html = '<img style="max-width:100%;" src="' + data.src + '" width="' + width + '"/>';
   res.json({
     body: html
