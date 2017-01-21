@@ -34,13 +34,84 @@
       document.getElementById('edit').value = editors[0].getSession().getValue();
     }
 
-    function submitCode() {
+    function submitCode(codeForm) {
       for(var i = 0; i < editors.length; i++) {
         document.getElementById('edit').value += "<Start Class>\n";
         document.getElementById('edit').value += editors[i].getSession().getValue();
         document.getElementById('edit').value += "\n";
         document.getElementById('edit').value += "<End Class>\n";
       }
+        var view_data;
+        $.ajax({
+            url:"http://localhost:8080/remoteCompile",
+            //async: false,
+            type: "POST",
+            data: $(codeForm).serialize(),
+            dataType: 'jsonp',
+            success:function(response_data_json) {
+                view_data = response_data_json;
+                console.log(view_data); //Shows the correct piece of information
+            },
+            error:function (err) {
+                console.log('Something went wrong.');
+            }
+        });
+        /*$.ajax({
+            url: 'http://compilx.com/remoteCompile',
+            data: $(codeForm).serialize(),
+            success: function(data)
+            {
+                alert(data);
+                //callback methods go right here
+            }
+        });*/
+        /*$.ajax({
+            url : ,
+            type: "POST",
+            data : formData,
+            success: function(data, textStatus, jqXHR)
+            {
+                //data - response from server
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+
+            }
+        });*/
+
+        /*var xhr = new XMLHttpRequest();
+        /*xhr.onload = function(){ alert (xhr.responseText);
+             };
+        xhr.open (codeForm.method, codeForm.action, true);
+        xhr.onreadystatechange = function() {
+            var status;
+            var data;
+            // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
+            if (xhr.readyState == 4) { // `DONE`
+                status = xhr.status;
+                if (status == 200) {
+                    data = JSON.parse(xhr.responseText);
+                }
+            }
+        };
+        xhr.send (new FormData (codeForm));*/
+      /*
+        var http = new XMLHttpRequest();
+        var url = "http://compilx.com/remoteCompile";
+        var params = "lorem=ipsum&name=binny";
+        var response;
+        http.open("POST", url, true);
+
+        //Send the proper header information along with the request
+        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+                response = http.responseText;
+            }
+        };
+        http.send(params);
+        */
     }
 
     $(document).ready( function () {
@@ -115,11 +186,10 @@
 
 
 
-  <form action="compile" id="send-code" method="POST" name="send-code">
-
+  <form id="send-code" name="send-code" onsubmit="submitCode(this)">
     <textarea type="text" id="edit" name="edit" style="width: 300px; height: 500px;" hidden="true"></textarea>
     <br>
-    <input type="submit" class="btn btn-primary" id="run" value="Run" onclick="submitCode()"/>
+    <input type="submit" class="btn btn-primary" id="run" value="Run"/>
     <br>
   </form>
 
