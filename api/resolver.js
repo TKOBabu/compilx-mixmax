@@ -9,10 +9,10 @@ module.exports = function(req, res) {
   var combinedCode = "";
 
   for(var i = 0; i < data['classes'].length; i++) {
-      combinedCode += "<Start Class>\n";
+      combinedCode += "@Start Class\n";
       combinedCode += data['classes'][i];
       combinedCode += "\n";
-      combinedCode += "<End Class>\n";
+      combinedCode += "@End Class\n";
   }
   var formatted_result = data.result.replace(/(?:\r\n|\r|\n)/g, '<br />');
   var html = '<p style="font-size: medium">'+formatted_result+'</p>' + '<form action="http://compilx.com/compile" id="send-code" method="POST" name="send-code">' +

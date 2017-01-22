@@ -35,11 +35,12 @@
     }
 
     function submitCode(codeForm) {
+      document.getElementById('edit').value ="";
       for(var i = 0; i < editors.length; i++) {
-        document.getElementById('edit').value += "<Start Class>\n";
+        document.getElementById('edit').value += "@Start Class\n";
         document.getElementById('edit').value += editors[i].getSession().getValue();
         document.getElementById('edit').value += "\n";
-        document.getElementById('edit').value += "<End Class>\n";
+        document.getElementById('edit').value += "@End Class\n";
       }
         /*var view_data;
         $.ajax({
