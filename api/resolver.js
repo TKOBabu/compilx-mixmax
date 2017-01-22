@@ -6,9 +6,22 @@ module.exports = function(req, res) {
     return;
   }
 
-  var width = data.width > 600 ? 600 : data.width;
-  // var head_html = '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">';
-  var html = '<img style="max-width:100%;" src="' + data.src + '" width="' + width + '"/>';
+  var combinedCode = "";
+
+  for(var i = 0; i < data['classes'].length; i++) {
+      combinedCode += "<Start Class>\n";
+      combinedCode += data['classes'][i];
+      combinedCode += "\n";
+      combinedCode += "<End Class>\n";
+  }
+  var formatted_result = data.result.replace(/(?:\r\n|\r|\n)/g, '<br />');
+  var html = '<p style="font-size: medium">'+formatted_result+'</p>' + '<form action="http://compilx.com/compile" id="send-code" method="POST" name="send-code">' +
+
+      '<textarea type="text" id="edit" name="edit" style="width: 300px; height: 200px;" hidden>'+combinedCode+'</textarea>' +
+      '<br>' +
+      '<input type="submit" class="btn btn-primary" id="run" value="Run Code Sent"/>' +
+      '<br>' +
+      '</form>';
   res.json({
     body: html
     // Add raw:true if you're returning content that you want the user to be able to edit
